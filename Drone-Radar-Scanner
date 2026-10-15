@@ -1,0 +1,50 @@
+---
+
+## 📄 Project 3: `Drone-Radar-Scanner`
+
+### Repository Setup
+1. Create a public repository named **`Drone-Radar-Scanner`**.
+2. Add a file named `radar.py`:
+
+```python
+import math
+import random
+import time
+
+class DroneRadarScanner:
+    """
+    Simulates RF / Remote ID telemetry detection to plot local unmanned 
+    aerial vehicles (UAVs) on a terminal radar display.
+    """
+
+    def __init__(self, radius_km=5.0):
+        self.radius_km = radius_km
+
+    def generate_simulated_targets(self, count=3):
+        targets = []
+        for i in range(1, count + 1):
+            distance = round(random.uniform(0.5, self.radius_km), 2)
+            bearing = random.randint(0, 359)
+            altitude_m = random.randint(30, 250)
+            targets.append({
+                "drone_id": f"UAV-00{i}",
+                "distance_km": distance,
+                "bearing_deg": bearing,
+                "altitude_m": altitude_m,
+                "signal_dbm": random.randint(-85, -45)
+            })
+        return targets
+
+    def render_radar(self, targets):
+        print("\n" + "="*50)
+        print(f"📡 AIRSPACE RADAR SCANNER (Radius: {self.radius_km} km)")
+        print("="*50)
+        
+        for t in targets:
+            print(f" [🎯 DETECTED] ID: {t['drone_id']} | Dist: {t['distance_km']}km | Bearing: {t['bearing_deg']}° | Alt: {t['altitude_m']}m | RSSI: {t['signal_dbm']} dBm")
+        print("="*50 + "\n")
+
+if __name__ == "__main__":
+    radar = DroneRadarScanner()
+    simulated_drones = radar.generate_simulated_targets(3)
+    radar.render_radar(simulated_drones)
